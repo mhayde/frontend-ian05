@@ -1,0 +1,101 @@
+<div nz-row nzJustify="center" nzAlign="middle">
+    <div nz-col nzSpan="24" nzJustify="center">
+        <h1>Venta</h1>
+    </div>
+</div>
+<div nz-row>
+    <div nz-col nzSpan="24"><button (click)="mostrar()" nz-button nzType="primary">Nueva Venta</button></div>
+</div>
+<hr>
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <nz-table #basicTable [nzData]="venta">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Venta</th>
+                    <th>Subtotal</th>
+                    <th>Impuesto</th>
+                    <th>Total</th>
+                    <th>Cliente</th>
+                    <th>Administración</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of basicTable.data; let i=index">
+                    <td>{{i+1}}</td>
+                    <td>{{data.id}}</td>
+                    <td>{{data.subtotal}}</td>
+                    <td>{{data.impuesto}}</td>
+                    <td>{{data.total}}</td>
+                    <td>{{data.clienteId}}</td>
+                    <td>
+                        <a (click)="mostrar(data)"><i nz-icon nzType="edit" nzTheme="twotone"></i></a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a nz-popconfirm nzPopconfirmTitle="¿Está seguro de borrar el registro?" nzPopconfirmPlacement="bottom" (nzOnConfirm)="eliminar(data.id!)" (nzOnCancel)="cancel()" nzShape="circle" nzCancelText="No" nzOkText="Si"><i nz-icon nzType="delete"
+                                nzTheme="outline"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+
+
+
+
+<nz-modal [(nzVisible)]="visible" nzTitle="Administracion Venta" nzClosable="false">
+    <ng-container *nzModalContent>
+        <form nz-form nzLayout="vertical" (ngSubmit)="guardar()" [formGroup]="formVenta">
+            <div nz-row [nzGutter]="8">
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label>Subtotal</nz-form-label>
+                        <nz-form-control nzErrorTip="Por favor escriba el dato correcto!">
+                            <nz-input-number formControlName="subtotal" nz-input placeholder="Escribe el Subtotal de la factura" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row [nzGutter]="8">
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label>Impuesto</nz-form-label>
+                        <nz-form-control nzErrorTip="Por favor escriba el dato correcto!">
+                            <nz-input-number formControlName="impuesto" nz-input placeholder="Escribe el impuesto" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row [nzGutter]="8">
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label>Total</nz-form-label>
+                        <nz-form-control nzErrorTip="Por favor escriba el dato correcto!">
+                            <nz-input-number formControlName="total" nz-input placeholder="Escribe el total de la factura" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row [nzGutter]="8">
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label>Cliente</nz-form-label>
+                        <nz-form-control nzErrorTip="Por favor escriba el dato correcto!">
+                            <nz-select formControlName="clienteId">
+                                <nz-option *ngFor="let item of cliente" [nzValue]="item.id" [nzLabel]="item.nombre">
+                                </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+    <div *nzModalFooter>
+        <button nz-button nzType="default" (click)="ocultar()">Cancelar</button>
+        <button nz-button nzType="primary" (click)="guardar()">Guardar</button>
+    </div>
+</nz-modal>

@@ -1,0 +1,102 @@
+<div nz-row nzJustify="center" nzAlign="middle">
+    <div nz-col nzSpan="24" nzJustify="center">
+        <h1>Ingreso Producto</h1>
+    </div>
+</div>
+<div nz-row>
+    <div nz-col nzSpan="24"><button (click)="mostrar()" nz-button nzType="primary">Nuevo Ingreso Producto</button></div>
+</div>
+<hr>
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <nz-table #basicTable [nzData]="ingresoProducto">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Factura Compra</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Fecha de Compra</th>
+                    <th>Administración</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of basicTable.data; let i=index">
+                    <td>{{i+1}}</td>
+                    <td>{{data.facturaCompraId}}</td>
+                    <td>{{data.productoId}}</td>
+                    <td>{{data.cantidad}}</td>
+                    <td>{{data.fechaCompra}}</td>
+                    <td>
+                        <a (click)="mostrar(data)"><i nz-icon nzType="edit" nzTheme="twotone"></i></a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a nz-popconfirm nzPopconfirmTitle="¿Está seguro de borrar el registro?" nzPopconfirmPlacement="bottom" (nzOnConfirm)="eliminar(data.id!)" (nzOnCancel)="cancel()" nzShape="circle" nzCancelText="No" nzOkText="Si"><i nz-icon nzType="delete"
+                                nzTheme="outline"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+
+
+
+
+<nz-modal [(nzVisible)]="visible" nzTitle="Administracion Ingreso de Producto" nzClosable="false">
+    <ng-container *nzModalContent>
+        <form nz-form nzLayout="vertical" (ngSubmit)="guardar()" [formGroup]="formIngresoProducto">
+            <div nz-row [nzGutter]="8">
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label>Factura de Compra</nz-form-label>
+                        <nz-form-control nzErrorTip="Por favor escriba el dato correcto!">
+                            <nz-select formControlName="facturaCompraId">
+                                <nz-option *ngFor="let item of facturaCompra" [nzValue]="item.id" [nzLabel]="item.numeroFactura">
+                                </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row [nzGutter]="8">
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label>Producto</nz-form-label>
+                        <nz-form-control nzErrorTip="Por favor escriba el dato correcto!">
+                            <nz-select formControlName="productoId">
+                                <nz-option *ngFor="let item of producto" [nzValue]="item.id" [nzLabel]="item.nombre">
+                                </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row [nzGutter]="8">
+                <div nz-col nzSpan="12">
+                    <nz-form-item>
+                        <nz-form-label>Cantidad</nz-form-label>
+                        <nz-form-control nzErrorTip="Por favor escriba el dato correcto!">
+                            <nz-input-number formControlName="cantidad" nz-input placeholder="Escribe la cantidad de producto" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row [nzGutter]="8">
+                <div nz-col nzSpan="24">
+                    <nz-form-item>
+                        <nz-form-label>Fecha de Compra</nz-form-label>
+                        <nz-form-control nzErrorTip="Por favor escriba el dato correcto!">
+                            <nz-date-picker formControlName="fechaCompra" nzPlaceHolder="Seleccione Fecha"></nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+    <div *nzModalFooter>
+        <button nz-button nzType="default" (click)="ocultar()">Cancelar</button>
+        <button nz-button nzType="primary" (click)="guardar()">Guardar</button>
+    </div>
+</nz-modal>
